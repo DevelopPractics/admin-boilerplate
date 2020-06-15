@@ -1,24 +1,23 @@
 import React from "react";
 import { Layout, Menu } from "antd";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import "./index.css";
-import CreateDinner from "../Components/Create/Dinner";
+import CreateDishes from "../Components/Create/Dishes";
 import CreateUser from "../Components/Create/User";
 import CreateCategory from "../Components/Create/Category";
 import CreatePromotion from "../Components/Create/Promotion";
 import StatisticsDishes from "../Components/Statistics/Dishes";
 import StatisticsGeneral from "../Components/Statistics/General";
 import StatisticsCustomer from "../Components/Statistics/Customer";
+import EditDishes from "../Components/Edit/Dishes";
+import EditCategories from "../Components/Edit/Category";
+import EditUSers from "../Components/Edit/User";
 
 const { SubMenu } = Menu;
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 class SiderDemo extends React.Component {
   state = {
     collapsed: false,
@@ -26,7 +25,7 @@ class SiderDemo extends React.Component {
   };
 
   onCollapse = (collapsed) => {
-    console.log(collapsed);
+    console.log("collapsed: " + collapsed);
     this.setState({ collapsed });
   };
 
@@ -65,7 +64,7 @@ class SiderDemo extends React.Component {
               >
                 <Menu.Item key="1" onClick={(e) => this.changeKey(e.key)}>
                   Home
-                  <Link to="/general_stats" />
+                  <Link to="/" />
                 </Menu.Item>
                 <Menu.Item key="2" onClick={(e) => this.changeKey(e.key)}>
                   Platillos
@@ -80,19 +79,50 @@ class SiderDemo extends React.Component {
               <SubMenu key="sub2" icon={<UserOutlined />} title="Agregar">
                 <Menu.Item key="4" onClick={(e) => this.changeKey(e.key)}>
                   Platillos
-                  <Link to="/" />
+                  <Link to="/create_dishes" />
                 </Menu.Item>
                 <Menu.Item key="5" onClick={(e) => this.changeKey(e.key)}>
                   Categorías
                   <Link to="/create_category" />
                 </Menu.Item>
-                <Menu.Item key="6" onClick={(e) => this.changeKey(e.key)}>
+                <Menu.Item
+                  hidden={true}
+                  key="6"
+                  onClick={(e) => this.changeKey(e.key)}
+                >
                   Promociones
                   <Link to="/create_promotion" />
                 </Menu.Item>
                 <Menu.Item key="7" onClick={(e) => this.changeKey(e.key)}>
                   Usuario
                   <Link to="/create_user" />
+                </Menu.Item>
+              </SubMenu>
+              <SubMenu
+                key="sub3"
+                open={true}
+                icon={<UserOutlined />}
+                title="Editar"
+              >
+                <Menu.Item key="8" onClick={(e) => this.changeKey(e.key)}>
+                  Platillos
+                  <Link to="/edit_dishes" />
+                </Menu.Item>
+                <Menu.Item key="9" onClick={(e) => this.changeKey(e.key)}>
+                  Categorías
+                  <Link to="/edit_categories" />
+                </Menu.Item>
+                <Menu.Item
+                  key="10"
+                  hidden={true}
+                  onClick={(e) => this.changeKey(e.key)}
+                >
+                  Promociones
+                  <Link to="/edite_promotion" />
+                </Menu.Item>
+                <Menu.Item key="11" onClick={(e) => this.changeKey(e.key)}>
+                  Usuario
+                  <Link to="/edit_users" />
                 </Menu.Item>
               </SubMenu>
             </Menu>
@@ -107,7 +137,7 @@ class SiderDemo extends React.Component {
                 className="site-layout-background"
                 style={{ padding: 24, minHeight: 360 }}
               >
-                <Route exact path="/" component={CreateDinner} />
+                <Route exact path="/create_dishes" component={CreateDishes} />
                 <Route exact path="/create_user" component={CreateUser} />
                 <Route
                   exact
@@ -124,19 +154,21 @@ class SiderDemo extends React.Component {
                   path="/dishes_stats"
                   component={StatisticsDishes}
                 />
-                <Route
-                  exact
-                  path="/general_stats"
-                  component={StatisticsGeneral}
-                />
+                <Route exact path="/" component={StatisticsGeneral} />
                 <Route
                   exact
                   path="/customer_stats"
                   component={StatisticsCustomer}
                 />
+                <Route exact path="/edit_dishes" component={EditDishes} />
+                <Route
+                  exact
+                  path="/edit_categories"
+                  component={EditCategories}
+                />
+                <Route exact path="/edit_users" component={EditUSers} />
               </div>
             </Content>
-            <Footer style={{ textAlign: "center" }}>Mi restaurante</Footer>
           </Layout>
         </Layout>
       </Router>

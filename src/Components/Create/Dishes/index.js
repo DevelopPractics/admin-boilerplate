@@ -1,7 +1,10 @@
 import React from "react";
-import { Form, Input, Button } from "antd";
-import { Upload, Modal } from "antd";
+
+import { Form, Input, Button, InputNumber } from "antd";
+import { Upload, Modal, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+
+const { Option } = Select;
 
 const layout = {
   labelCol: {
@@ -11,9 +14,29 @@ const layout = {
     span: 16,
   },
 };
+const tailLayout = {
+  wrapperCol: {
+    offset: 8,
+    span: 16,
+  },
+};
 const { TextArea } = Input;
+function onChange(value) {
+  console.log(`selected ${value}`);
+}
 
-export default class CreateCategory extends React.Component {
+function onBlur() {
+  console.log("blur");
+}
+
+function onFocus() {
+  console.log("focus");
+}
+
+function onSearch(val) {
+  console.log("search:", val);
+}
+export default class CreateDish extends React.Component {
   state = {
     previewVisible: false,
     previewImage: "",
@@ -113,7 +136,37 @@ export default class CreateCategory extends React.Component {
         >
           <TextArea rows={3} />
         </Form.Item>
-
+        <Form.Item name="category">
+          <Select
+            showSearch
+            style={{ marginLeft: 10, width: "50%" }}
+            placeholder="Selecciona una categoría"
+            optionFilterProp="children"
+            onChange={onChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            onSearch={onSearch}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            <Option value="pastas">Entradas</Option>
+            <Option value="plato_fuerte">Plato fuerte</Option>
+            <Option value="postre">Postre</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="Precio" name="price">
+          <InputNumber
+            type="tel"
+            style={{ width: "50%" }}
+            defaultValue={0}
+            formatter={(value) =>
+              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            onChange={onChange}
+          />
+        </Form.Item>
         <Form.Item>
           <Upload
             action={"url"}
@@ -133,12 +186,8 @@ export default class CreateCategory extends React.Component {
             <img alt="example" style={{ width: "100%" }} src={previewImage} />
           </Modal>
         </Form.Item>
-        <Form.Item {...layout}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            onSubmit={(e) => this.validatePassword(e)}
-          >
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>
